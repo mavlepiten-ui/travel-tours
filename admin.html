@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Avery Maise Transport</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .admin-login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-color);
+            padding: 20px;
+        }
+        .admin-dashboard-wrapper {
+            display: none;
+            min-height: 100vh;
+            background: var(--bg-color);
+            padding-bottom: 50px;
+        }
+        
+        /* Tabs */
+        .admin-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            overflow-x: auto;
+        }
+        .admin-tab {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 12px;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .admin-tab.active {
+            background: var(--primary-color);
+            color: #fff;
+        }
+        .admin-tab:hover:not(.active) {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Tables & Lists */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .data-table th, .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .data-table th {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-new { background: #3b82f6; color: white; }
+        .status-confirmed { background: #f59e0b; color: white; }
+        .status-completed { background: #10b981; color: white; }
+        .status-cancelled { background: #ef4444; color: white; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. LOGIN SCREEN -->
+    <div class="admin-login-wrapper" id="login-view">
+        <div class="card glass-panel" style="max-width: 400px; width: 100%; padding: 40px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <i data-lucide="lock" style="width: 48px; height: 48px; color: var(--primary-color); margin-bottom: 15px;"></i>
+                <h2>Admin Access</h2>
+                <p style="color: var(--text-secondary);">Enter master password to continue</p>
+            </div>
+            <div class="input-group" style="margin-bottom: 20px;">
+                <input type="password" id="admin-pw" placeholder="Secret Password" style="width:100%;padding:14px;border:1px solid var(--border-color);border-radius:12px;background:var(--bg-color);color:var(--text-color);font-family:inherit;font-size:1rem;" onkeydown="if(event.key==='Enter')loginAdmin()">
+            </div>
+            <button onclick="loginAdmin()" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 1.1rem;">Unlock Dashboard</button>
+            <p id="login-error" style="color: #ef4444; text-align: center; margin-top: 15px; display: none;">❌ Incorrect password</p>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="index.php" style="color: var(--text-secondary); text-decoration: none; font-size: 0.9rem;">← Back to Website</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MAIN DASHBOARD -->
+    <div class="admin-dashboard-wrapper" id="dashboard-view">
+        <header style="background: var(--surface-color); border-bottom: 1px solid var(--border-color); padding: 20px 0;">
+            <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <i data-lucide="shield-check" style="width:32px;height:32px;color:var(--primary-color);"></i>
+                    <h2 style="margin: 0;">Admin Control Panel</h2>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <a href="index.php" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.9rem;">View Site</a>
+                    <button onclick="logoutAdmin()" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="container" style="margin-top: 40px;">
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchTab('bookings')"><i data-lucide="calendar" style="display:inline;width:18px;vertical-align:-4px;margin-right:8px;"></i> Manage Bookings</button>
+                <button class="admin-tab" onclick="switchTab('reviews')"><i data-lucide="star" style="display:inline;width:18px;vertical-align:-4px;margin-right:8px;"></i> Moderate Reviews</button>
+                <button class="admin-tab" onclick="switchTab('travels')"><i data-lucide="image" style="display:inline;width:18px;vertical-align:-4px;margin-right:8px;"></i> Upload Travels</button>
+            </div>
+
+            <!-- BOOKINGS TAB -->
+            <div id="tab-bookings" class="tab-content active">
+                <div class="card" style="padding: 30px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                        <h3 style="margin:0;">Recent Booking Requests</h3>
+                        <button onclick="loadBookings()" class="btn btn-secondary" style="padding: 5px 12px; font-size: 0.85rem;">🔄 Refresh</button>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date Received</th>
+                                    <th>Customer</th>
+                                    <th>Trip Details</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookings-tbody">
+                                <tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">Loading bookings...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REVIEWS TAB -->
+            <div id="tab-reviews" class="tab-content">
+                <div class="card" style="padding: 30px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                        <h3 style="margin:0;">Pending Reviews Moderation</h3>
+                        <button onclick="loadReviews()" class="btn btn-secondary" style="padding: 5px 12px; font-size: 0.85rem;">🔄 Refresh</button>
+                    </div>
+                    <div id="pending-reviews-list">
+                        <p style="text-align:center;color:var(--text-secondary);">Loading reviews...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRAVELS TAB -->
+            <div id="tab-travels" class="tab-content">
+                <div class="card" style="padding: 30px; max-width: 600px; margin: 0 auto;">
+                    <h3 style="margin-bottom: 25px; text-align: center;">Upload New Travel Adventure</h3>
+                    <form id="upload-form" enctype="multipart/form-data">
+                        <div class="input-group" style="margin-bottom: 15px;">
+                            <label for="title" style="display:block;margin-bottom:6px;font-weight:600;">Destination Title</label>
+                            <input type="text" id="title" name="title" required placeholder="e.g., Summer in Boracay" style="width:100%;padding:12px 16px;border:1px solid var(--border-color);border-radius:12px;background:var(--bg-color);color:var(--text-color);font-family:inherit;">
+                        </div>
+                        <div class="input-group" style="margin-bottom: 15px;">
+                            <label for="description" style="display:block;margin-bottom:6px;font-weight:600;">Trip Story / Details</label>
+                            <textarea id="description" name="description" rows="4" required placeholder="Tell us about the trip..." style="width:100%;padding:12px 16px;border:1px solid var(--border-color);border-radius:12px;background:var(--bg-color);color:var(--text-color);font-family:inherit;resize:vertical;"></textarea>
+                        </div>
+                        <div class="input-group" style="margin-bottom: 25px;">
+                            <label for="media" style="display:block;margin-bottom:6px;font-weight:600;">Choose Photos</label>
+                            <input type="file" id="media" name="media[]" multiple accept="image/*,video/*" required style="width:100%;padding:10px;border:1px dashed var(--border-color);border-radius:12px;background:var(--bg-color);color:var(--text-color);">
+                        </div>
+                        <button type="submit" id="upload-btn" class="btn btn-primary" style="width: 100%; padding: 14px;">Upload & Publish</button>
+                        <div id="upload-response" style="margin-top: 15px; text-align: center; display: none;"></div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD SCRIPT -->
+    <script>
+        lucide.createIcons();
+        let masterPassword = sessionStorage.getItem('admin_pw') || '';
+
+        // Auto-login check if already authenticated
+        if (masterPassword) {
+            checkAuth();
+        }
+
+        async function loginAdmin() {
+            const pw = document.getElementById('admin-pw').value;
+            if (!pw) return;
+            masterPassword = pw;
+            
+            // Test auth via reviews API
+            const res = await checkAuth();
+            if (!res) {
+                document.getElementById('login-error').style.display = 'block';
+                masterPassword = '';
+            } else {
+                sessionStorage.setItem('admin_pw', pw);
+                document.getElementById('login-error').style.display = 'none';
+            }
+        }
+
+        async function checkAuth() {
+            // Test password against bookings API
+            const testData = new FormData();
+            testData.append('password', masterPassword);
+            testData.append('action', 'test');
+            try {
+                const res = await fetch('bookings_api.php', { method: 'POST', body: testData });
+                if (res.status === 403) return false;
+                
+                // Show dashboard
+                document.getElementById('login-view').style.display = 'none';
+                document.getElementById('dashboard-view').style.display = 'block';
+                
+                // Initial Data Loads
+                loadBookings();
+                loadReviews();
+                return true;
+            } catch(e) {
+                return false;
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('admin_pw');
+            masterPassword = '';
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('login-view').style.display = 'flex';
+            document.getElementById('admin-pw').value = '';
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.currentTarget.classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+
+        // --- 1. BOOKINGS MGMT ---
+        async function loadBookings() {
+            const tbody = document.getElementById('bookings-tbody');
+            try {
+                const res = await fetch('bookings_api.php?status=all');
+                const data = await res.json();
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;">No bookings found.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = data.map(b => {
+                    const d = new Date(b.created_at).toLocaleDateString();
+                    return `
+                        <tr>
+                            <td style="color:var(--text-secondary);">${d}</td>
+                            <td>
+                                <strong>${b.name}</strong><br>
+                                <span style="font-size:0.85rem;color:var(--primary-color);">📞 ${b.phone}</span>
+                            </td>
+                            <td>
+                                <strong>${b.destination}</strong><br>
+                                <span style="font-size:0.85rem;color:var(--text-secondary);">📅 ${b.travel_date} | 👥 ${b.passengers} Pax</span><br>
+                                ${b.requests ? `<span style="font-size:0.8rem;color:#f59e0b;">Notes: ${b.requests}</span>` : ''}
+                            </td>
+                            <td><span class="status-badge status-${b.status}">${b.status.toUpperCase()}</span></td>
+                            <td>
+                                <select onchange="updateBookingStatus(${b.id}, this.value)" style="padding:5px;border-radius:6px;background:var(--bg-color);color:var(--text-color);border:1px solid var(--border-color);">
+                                    <option value="new" ${b.status==='new'?'selected':''}>New</option>
+                                    <option value="confirmed" ${b.status==='confirmed'?'selected':''}>Confirm</option>
+                                    <option value="completed" ${b.status==='completed'?'selected':''}>Complete</option>
+                                    <option value="cancelled" ${b.status==='cancelled'?'selected':''}>Cancel</option>
+                                </select>
+                                <button onclick="deleteBooking(${b.id})" style="margin-left:5px;background:none;border:none;color:#ef4444;cursor:pointer;font-size:1.1rem;" title="Delete">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="5" style="color:#ef4444;text-align:center;">Failed to load bookings.</td></tr>';
+            }
+        }
+
+        async function updateBookingStatus(id, newStatus) {
+            const formData = new FormData();
+            formData.append('action', 'update_status');
+            formData.append('booking_id', id);
+            formData.append('status', newStatus);
+            formData.append('password', masterPassword);
+
+            await fetch('bookings_api.php', { method: 'POST', body: formData });
+            loadBookings();
+        }
+
+        async function deleteBooking(id) {
+            if (!confirm('Permanently delete this booking record?')) return;
+            const formData = new FormData();
+            formData.append('action', 'delete');
+            formData.append('booking_id', id);
+            formData.append('password', masterPassword);
+
+            await fetch('bookings_api.php', { method: 'POST', body: formData });
+            loadBookings();
+        }
+
+        // --- 2. REVIEWS MGMT ---
+        async function loadReviews() {
+            const list = document.getElementById('pending-reviews-list');
+            try {
+                const res = await fetch('reviews_api.php?mode=pending');
+                const data = await res.json();
+                
+                if (data.length === 0) {
+                    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-secondary);">✅ No pending reviews. You are all caught up!</div>';
+                    return;
+                }
+
+                list.innerHTML = data.map(r => {
+                    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                    return `
+                        <div style="border:1px solid var(--border-color);border-radius:16px;padding:20px;margin-bottom:15px;background:rgba(255,255,255,0.02);">
+                            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">
+                                <div>
+                                    <strong>${r.name}</strong>
+                                    <span style="color:var(--text-secondary);font-size:0.85rem;margin-left:8px;">${r.route}</span>
+                                </div>
+                                <span style="color:#f59e0b;font-size:1.1rem;">${stars}</span>
+                            </div>
+                            <p style="color:var(--text-secondary);font-size:0.95rem;line-height:1.6;margin-bottom:15px;">"${r.message}"</p>
+                            ${r.photo ? `<img src="${r.photo}" style="max-height:150px;border-radius:8px;margin-bottom:15px;object-fit:cover;">` : ''}
+                            <div style="display:flex;gap:10px;">
+                                <button onclick="reviewAction('approve', ${r.id})" class="btn btn-primary" style="padding:6px 16px;font-size:0.85rem;">✅ Approve</button>
+                                <button onclick="reviewAction('delete', ${r.id})" style="padding:6px 16px;font-size:0.85rem;background:#ef4444;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🗑️ Delete</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch(e) {
+                list.innerHTML = '<p style="color:#ef4444;text-align:center;">Failed to load reviews.</p>';
+            }
+        }
+
+        async function reviewAction(action, id) {
+            if (!confirm(`Are you sure you want to ${action} this review?`)) return;
+            const formData = new FormData();
+            formData.append('action', action);
+            formData.append('review_id', id);
+            formData.append('password', masterPassword);
+
+            await fetch('reviews_api.php', { method: 'POST', body: formData });
+            loadReviews();
+        }
+
+        // --- 3. TRAVELS MGMT ---
+        const uploadForm = document.getElementById('upload-form');
+        const uploadBtn = document.getElementById('upload-btn');
+        const uploadResponse = document.getElementById('upload-response');
+
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            uploadBtn.disabled = true;
+            uploadBtn.innerText = 'Uploading... Please wait';
+            uploadResponse.style.display = 'none';
+
+            const formData = new FormData(uploadForm);
+            formData.append('password', masterPassword); // Inject secure password session
+
+            try {
+                const res = await fetch('api.php', { method: 'POST', body: formData });
+                const result = await res.json();
+                
+                uploadResponse.style.display = 'block';
+                if (result.success) {
+                    uploadResponse.innerHTML = `<span style="color:#10b981;font-weight:600;">✅ ${result.success}</span>`;
+                    uploadForm.reset();
+                } else {
+                    uploadResponse.innerHTML = `<span style="color:#ef4444;font-weight:600;">❌ ${result.error}</span>`;
+                }
+            } catch(err) {
+                uploadResponse.style.display = 'block';
+                uploadResponse.innerHTML = '<span style="color:#ef4444;font-weight:600;">❌ Network or Server Error.</span>';
+            } finally {
+                uploadBtn.disabled = false;
+                uploadBtn.innerText = 'Upload & Publish';
+            }
+        });
+
+    </script>
+</body>
+</html>

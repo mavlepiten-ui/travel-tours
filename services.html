@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | Avery Maise Transport</title>
+    <meta name="description" content="Explore our destinations and transport services across the Philippines.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .page-header {
+            padding-top: 120px;
+            padding-bottom: 40px;
+            background: var(--surface-color);
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.php" class="brand">Avery Maise <span>Transport</span></a>
+            <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Menu">
+                <i data-lucide="menu"></i>
+            </button>
+            <nav class="nav-links" id="nav-links">
+                <a href="index.php">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html" class="active">Services</a>
+                <a href="travels.php">My Travels</a>
+                <a href="contact.html" class="btn btn-primary">Book Now</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Our <span>Services & Destinations</span></h1>
+                <p>We can take you anywhere around the Philippines. Here are some favorites.</p>
+            </div>
+        </section>
+
+        <section class="destinations section-padding">
+            <div class="container">
+                <div class="cards-grid">
+                    <!-- Card 1 -->
+                    <div class="card">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_manila_bgc_1776307578576.png" alt="Metro Manila Skyline">
+                        </div>
+                        <div class="card-content">
+                            <h3>Metro Manila Tours</h3>
+                            <p>Explore the historic Intramuros, vibrant BGC, and the bustling city life safely in my comfortable vehicle.</p>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="card">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_tagaytay_taal_1776307599481.png" alt="Tagaytay Taal Volcano">
+                        </div>
+                        <div class="card-content">
+                            <h3>South Provinces (Tagaytay/Batangas)</h3>
+                            <p>Day trips to feel the cool breeze of Tagaytay or visit the pristine beaches of Batangas.</p>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="card">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_north_luzon_mountains_1776307617786.png" alt="North Luzon Mountains">
+                        </div>
+                        <div class="card-content">
+                            <h3>North Luzon Adventures</h3>
+                            <p>Long drives to Baguio, La Union, or Ilocos. Sit back and sleep while I navigate the mountain passes.</p>
+                        </div>
+                    </div>
+                     <!-- Card 4 -->
+                     <div class="card">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_airport_transfer_van_1776307635720.png" alt="NAIA Airport Transfer">
+                        </div>
+                        <div class="card-content">
+                            <h3>NAIA Airport Transfers</h3>
+                            <p>Hassle-free pick-up and drop-off to and from Ninoy Aquino International Airport (NAIA) to your hotel.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cards-grid" style="margin-top: 30px;">
+                    <!-- Card 5 -->
+                    <div class="card">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_vigan_heritage_1776307654879.png" alt="Vigan Heritage">
+                        </div>
+                        <div class="card-content">
+                            <h3>Ilocos Heritage Tours</h3>
+                            <p>Step back in time at Calle Crisologo in Vigan or enjoy the white sands of Pagudpud. Long-haul drives made easy.</p>
+                        </div>
+                    </div>
+                    <!-- Card 6 -->
+                    <div class="card">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_zambales_beach_1776307671238.png" alt="Zambales Beaches">
+                        </div>
+                        <div class="card-content">
+                            <h3>Zambales & Subic Bay</h3>
+                            <p>From beach camping in San Antonio to family-friendly fun in Subic Safari. We provide cross-border transport.</p>
+                        </div>
+                    </div>
+                    <!-- Card 7 -->
+                    <div class="card">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_mayon_volcano_1776307687639.png" alt="Mayon Volcano">
+                        </div>
+                        <div class="card-content">
+                            <h3>Mayon & Bicol Region</h3>
+                            <p>Witness the perfect cone of Mayon Volcano. We handle the 10+ hour drive so you can enjoy the spicy Bicol Express.</p>
+                        </div>
+                    </div>
+                    <!-- Card 8 -->
+                    <div class="card">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_baler_surfing_1776307703294.png" alt="Baler Surfing">
+                        </div>
+                        <div class="card-content">
+                            <h3>Baler (Aurora) Surfing</h3>
+                            <p>The birthplace of Ph surfing. Safe mountain navigation through the Sierra Madre pass to get you to the waves.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section-padding" style="background: var(--bg-color);">
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <div class="badge">Partner Offers</div>
+                    <h2 style="font-size: 2.5rem; margin-top: 15px;">Top Tours in <span>Luzon</span></h2>
+                    <p style="color: var(--text-secondary);">Book these amazing experiences to go with your ride!</p>
+                </div>
+                
+                <div class="cards-grid">
+                    <!-- Manila Card -->
+                    <div class="card glass-panel">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_manila_bgc_1776307578576.png" alt="Intramuros Manila">
+                        </div>
+                        <div class="card-content">
+                            <h3>Manila: Old & New</h3>
+                            <p>Discover Intramuros and Binondo. Book skip-the-line tickets and guides.</p>
+                            <a href="https://www.getyourguide.com/manila-l4672/" target="_blank" class="btn btn-outline" style="width: 100%; margin-top: 15px;">View Manila Tours</a>
+                        </div>
+                    </div>
+                    <!-- Tagaytay Card -->
+                    <div class="card glass-panel">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_tagaytay_taal_1776307599481.png" alt="Tagaytay Taal Volcano">
+                        </div>
+                        <div class="card-content">
+                            <h3>Tagaytay & Taal</h3>
+                            <p>Boat rides and sightseeing tours at the famous Taal Volcano.</p>
+                            <a href="https://www.getyourguide.com/tagaytay-l91550/" target="_blank" class="btn btn-outline" style="width: 100%; margin-top: 15px;">View Tagaytay Activities</a>
+                        </div>
+                    </div>
+                    <!-- Pagsanjan Card -->
+                    <div class="card glass-panel">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_pagsanjan_falls_1776307719422.png" alt="Pagsanjan Waterfalls">
+                        </div>
+                        <div class="card-content">
+                            <h3>Pagsanjan Falls</h3>
+                            <p>The ultimate canoeing adventure in Laguna. Book your slot in advance.</p>
+                            <a href="https://www.getyourguide.com/s/?q=Pagsanjan" target="_blank" class="btn btn-outline" style="width: 100%; margin-top: 15px;">Explore Laguna Tours</a>
+                        </div>
+                    </div>
+                    <!-- Subic Card -->
+                    <div class="card glass-panel">
+                        <div class="card-img-wrapper">
+                            <img src="images/service_zambales_beach_1776307671238.png" alt="Subic Bay">
+                        </div>
+                        <div class="card-content">
+                            <h3>Subic Safari & Water</h3>
+                            <p>Fun for the whole family! Tickets for Zoobic and Ocean Adventure.</p>
+                            <a href="https://www.getyourguide.com/subic-bay-l91549/" target="_blank" class="btn btn-outline" style="width: 100%; margin-top: 15px;">View Subic Tickets</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 50px; text-align: center;">
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                        * Bookings are handled by our partner GetYourGuide. Note your transport is separate!
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- Pricing Guide Section -->
+        <section class="section-padding">
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <div class="badge">Transparent Pricing</div>
+                    <h2 style="font-size: 2.5rem; margin-top: 15px;">Rate <span>Guide</span></h2>
+                    <p style="color: var(--text-secondary);">Starting rates for popular routes. Final price depends on itinerary and duration.</p>
+                </div>
+                
+                <div style="max-width: 750px; margin: 0 auto;">
+                    <div class="card" style="overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
+                            <thead>
+                                <tr style="background: var(--primary-color); color: #fff;">
+                                    <th style="padding: 16px 20px; text-align: left;">Route</th>
+                                    <th style="padding: 16px 20px; text-align: left;">Type</th>
+                                    <th style="padding: 16px 20px; text-align: right;">Starting Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 14px 20px;">NAIA → Metro Manila Hotel</td>
+                                    <td style="padding: 14px 20px; color: var(--text-secondary);">One-Way</td>
+                                    <td style="padding: 14px 20px; text-align: right; font-weight: 600;">₱1,500</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 14px 20px;">Manila → Tagaytay</td>
+                                    <td style="padding: 14px 20px; color: var(--text-secondary);">Day Trip</td>
+                                    <td style="padding: 14px 20px; text-align: right; font-weight: 600;">₱3,500</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 14px 20px;">Manila → Batangas Port</td>
+                                    <td style="padding: 14px 20px; color: var(--text-secondary);">One-Way</td>
+                                    <td style="padding: 14px 20px; text-align: right; font-weight: 600;">₱3,000</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 14px 20px;">Manila → Subic / Zambales</td>
+                                    <td style="padding: 14px 20px; color: var(--text-secondary);">Day Trip</td>
+                                    <td style="padding: 14px 20px; text-align: right; font-weight: 600;">₱5,000</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 14px 20px;">Manila → Baguio</td>
+                                    <td style="padding: 14px 20px; color: var(--text-secondary);">Multi-Day</td>
+                                    <td style="padding: 14px 20px; text-align: right; font-weight: 600;">₱8,000+</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 14px 20px;">Manila → Ilocos (Vigan)</td>
+                                    <td style="padding: 14px 20px; color: var(--text-secondary);">Multi-Day</td>
+                                    <td style="padding: 14px 20px; text-align: right; font-weight: 600;">₱12,000+</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 14px 20px;">Manila → Bicol (Mayon)</td>
+                                    <td style="padding: 14px 20px; color: var(--text-secondary);">Multi-Day</td>
+                                    <td style="padding: 14px 20px; text-align: right; font-weight: 600;">₱15,000+</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--text-secondary);">
+                        * Toll fees, parking, and driver meals (multi-day) are shouldered by the passenger.<br>
+                        * Final rate depends on itinerary, number of stops, and trip duration. <a href="contact.html" style="color: var(--primary-color); font-weight: 600;">Contact us</a> for a custom quote.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="padding: 80px 0 40px; border-top: 1px solid var(--border-color); background: var(--surface-color);">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 60px;">
+                <div>
+                    <a href="index.php" class="brand" style="margin-bottom: 20px; display: block;">Avery Maise <span>Transport</span></a>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Professional transport and tour services across Luzon. Safe, reliable, and premium travel for you and your family.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 20px;">Quick Links</h4>
+                    <ul style="list-style: none; display: grid; gap: 10px;">
+                        <li><a href="index.php" style="color: var(--text-secondary); text-decoration: none;">Home</a></li>
+                        <li><a href="about.html" style="color: var(--text-secondary); text-decoration: none;">About Us</a></li>
+                        <li><a href="services.html" style="color: var(--text-secondary); text-decoration: none;">Services</a></li>
+                        <li><a href="travels.php" style="color: var(--text-secondary); text-decoration: none;">My Travels</a></li>
+                        <li><a href="contact.html" style="color: var(--text-secondary); text-decoration: none;">Book Now</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 20px;">Business Info</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 10px;"><i data-lucide="map-pin" style="width: 16px; display: inline; vertical-align: middle; margin-right: 8px;"></i> Metro Manila, Philippines</p>
+                    <p style="color: var(--text-secondary); margin-bottom: 10px;"><i data-lucide="shield-check" style="width: 16px; display: inline; vertical-align: middle; margin-right: 8px;"></i> Licensed Transport Operator</p>
+                    <p style="color: var(--text-secondary);"><i data-lucide="mail" style="width: 16px; display: inline; vertical-align: middle; margin-right: 8px;"></i> junlynlp@gmail.com</p>
+                </div>
+            </div>
+            <div style="text-align: center; padding-top: 40px; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.9rem;">
+                <p>&copy; 2026 Avery Maise Transport. Official Partner of <a href="https://www.getyourguide.com" target="_blank" style="color: var(--primary-color); font-weight: 600;">GetYourGuide</a>.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Floating Admin Button -->
+    <a href="admin.html" class="fab-admin" aria-label="Admin Dashboard">
+        <i data-lucide="lock"></i>
+        <span class="tooltip">Admin Dashboard</span>
+    </a>
+
+    <script>lucide.createIcons();</script>
+    <script src="main.js"></script>
+    <script src="terms-modal.js"></script>
+</body>
+</html>

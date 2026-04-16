@@ -1,0 +1,19 @@
+# Environment Variables (Secrets)
+.env
+
+# XAMPP / Temp / OS Files
+Thumbs.db
+.DS_Store
+*.log
+*.tmp
+temp/
+
+# Uploaded Media (Don't push user-uploaded files to GitHub)
+uploads/reviews/*
+!uploads/reviews/.gitkeep
+uploads/travels/*
+!uploads/travels/.gitkeep
+
+# Composer dependencies
+vendor/
+composer.lock

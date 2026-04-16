@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Avery Maise Transport</title>
+    <meta name="description" content="Get in touch with Avery Maise Transport to book your next trip.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .page-header {
+            padding-top: 120px;
+            padding-bottom: 40px;
+            background: var(--surface-color);
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* QR Modal Styles */
+        .qr-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2500;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        .qr-modal.active {
+            display: flex;
+        }
+        .qr-content {
+            background: #fff;
+            padding: 25px;
+            border-radius: 24px;
+            max-width: 350px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+        .qr-content h3 { color: #1f2937; margin-bottom: 15px; font-weight: 800; }
+        .qr-content img {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+        .close-qr {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .view-qr-btn {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 12px;
+            border-radius: 100px;
+            display: inline-block;
+            transition: var(--transition);
+        }
+        .view-qr-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.php" class="brand">Avery Maise <span>Transport</span></a>
+            <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Menu">
+                <i data-lucide="menu"></i>
+            </button>
+            <nav class="nav-links" id="nav-links">
+                <a href="index.php">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="travels.php">My Travels</a>
+                <a href="contact.html" class="active btn btn-primary" style="color:white !important;">Book Now</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Contact <span>Us</span></h1>
+                <p>Ready to book your ride? Reach out to us today.</p>
+            </div>
+        </section>
+
+        <section class="contact section-padding">
+            <div class="container contact-container">
+                <div class="contact-info">
+                    <h2>Book Your Ride</h2>
+                    <p>Message me directly on your preferred platform to discuss rates and availability.</p>
+
+                    <div class="social-links">
+                        <div class="social-card-wrapper">
+                            <a href="https://wa.me/639945372199" target="_blank" class="social-card whatsapp">
+                                <i data-lucide="message-circle"></i>
+                                <div>
+                                    <span>WhatsApp</span>
+                                    <strong>Message Me</strong>
+                                </div>
+                            </a>
+                            <span class="view-qr-btn" onclick="openQR()">Scan QR Code</span>
+                        </div>
+
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=junlynlp@gmail.com" target="_blank" class="social-card gmail">
+                            <i data-lucide="mail"></i>
+                            <div>
+                                <span>Email</span>
+                                <strong>junlynlp@gmail.com</strong>
+                            </div>
+                        </a>
+
+                        <a href="https://www.facebook.com/p.lepitenjr" target="_blank" class="social-card facebook">
+                            <i data-lucide="facebook"></i>
+                            <div>
+                                <span>Facebook</span>
+                                <strong>Gaudencio Lepiten Jr.</strong>
+                            </div>
+                        </a>
+
+                        <a href="tel:+639945372199" class="social-card phone">
+                            <i data-lucide="phone"></i>
+                            <div>
+                                <span>Call / Text</span>
+                                <strong>+63 994 537 2199</strong>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="contact-image glass-panel">
+                    <h3>Send a quick inquiry</h3>
+                    <form id="inquiry-form" class="inquiry-form">
+                        <div class="input-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" placeholder="Juan Dela Cruz" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="phone">Philippine Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="0912 345 6789" pattern="[0-9 \-+]{10,15}" required>
+                            <small style="color: var(--text-secondary)">Format: 09XX XXX XXXX</small>
+                        </div>
+                        <div class="input-group">
+                            <label for="destination">Destination</label>
+                            <input type="text" id="destination" name="destination" placeholder="e.g. Tagaytay" required>
+                        </div>
+                        <div class="input-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="input-group">
+                                <label for="date">Travel Date</label>
+                                <input type="date" id="date" name="date" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="passengers">No. of Passengers</label>
+                                <input type="number" id="passengers" name="passengers" min="1" max="7" placeholder="Max 7" required>
+                                <small style="color: var(--text-secondary)">Limit: 7 passengers</small>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="requests">Special Requests / Notes</label>
+                            <textarea id="requests" name="requests" rows="3" placeholder="Additional details..."></textarea>
+                        </div>
+                        <button type="submit" id="submit-btn" class="btn btn-primary btn-full">Submit Request</button>
+                    </form>
+                    <div id="form-response" style="margin-top: 1rem; text-align: center; display: none;"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="padding: 80px 0 40px; border-top: 1px solid var(--border-color); background: var(--surface-color);">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 60px;">
+                <div>
+                    <a href="index.php" class="brand" style="margin-bottom: 20px; display: block;">Avery Maise <span>Transport</span></a>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Professional transport and tour services across Luzon. Safe, reliable, and premium travel for you and your family.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 20px;">Quick Links</h4>
+                    <ul style="list-style: none; display: grid; gap: 10px;">
+                        <li><a href="index.php" style="color: var(--text-secondary); text-decoration: none;">Home</a></li>
+                        <li><a href="about.html" style="color: var(--text-secondary); text-decoration: none;">About Us</a></li>
+                        <li><a href="services.html" style="color: var(--text-secondary); text-decoration: none;">Services</a></li>
+                        <li><a href="travels.php" style="color: var(--text-secondary); text-decoration: none;">My Travels</a></li>
+                        <li><a href="contact.html" style="color: var(--text-secondary); text-decoration: none;">Book Now</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 20px;">Business Info</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 10px;"><i data-lucide="map-pin" style="width: 16px; display: inline; vertical-align: middle; margin-right: 8px;"></i> Metro Manila, Philippines</p>
+                    <p style="color: var(--text-secondary); margin-bottom: 10px;"><i data-lucide="shield-check" style="width: 16px; display: inline; vertical-align: middle; margin-right: 8px;"></i> Licensed Transport Operator</p>
+                    <p style="color: var(--text-secondary);"><i data-lucide="mail" style="width: 16px; display: inline; vertical-align: middle; margin-right: 8px;"></i> junlynlp@gmail.com</p>
+                </div>
+            </div>
+            <div style="text-align: center; padding-top: 40px; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.9rem;">
+                <p>&copy; 2026 Avery Maise Transport. Official Partner of <a href="https://www.getyourguide.com" target="_blank" style="color: var(--primary-color); font-weight: 600;">GetYourGuide</a>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- QR Modal -->
+    <div id="qr-modal" class="qr-modal" onclick="if(event.target === this) closeQR()">
+        <div class="qr-content">
+            <button class="close-qr" onclick="closeQR()"><i data-lucide="x"></i></button>
+            <h3>WhatsApp QR</h3>
+            <img src="whatsapp_qr.jpg" alt="WhatsApp QR Code">
+            <p style="color: #6b7280; font-size: 0.9rem; margin-top: 15px;">Scan this code to add my number instantly!</p>
+        </div>
+    </div>
+
+
+    <!-- Floating Admin Button -->
+    <a href="admin.html" class="fab-admin" aria-label="Admin Dashboard">
+        <i data-lucide="lock"></i>
+        <span class="tooltip">Admin Dashboard</span>
+    </a>
+
+    <script>
+        lucide.createIcons();
+
+        // QR Modal Logic
+        const qrModal = document.getElementById('qr-modal');
+        function openQR() {
+            qrModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }
+        function closeQR() {
+            qrModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Contact Form Handling
+        const inquiryForm = document.getElementById('inquiry-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const formResponse = document.getElementById('form-response');
+
+        inquiryForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Sending Request...';
+            formResponse.style.display = 'none';
+
+            const formData = new FormData(inquiryForm);
+
+            try {
+                const response = await fetch('contact_handler.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                formResponse.style.display = 'block';
+                if (result.success) {
+                    formResponse.innerHTML = `<span style="color: var(--whatsapp); font-weight: 600;">✅ ${result.success}</span>`;
+                    inquiryForm.reset();
+                } else {
+                    formResponse.innerHTML = `<span style="color: var(--gmail); font-weight: 600;">❌ ${result.error}</span>`;
+                }
+            } catch (error) {
+                formResponse.style.display = 'block';
+                formResponse.innerHTML = `<span style="color: var(--gmail); font-weight: 600;">❌ Something went wrong. Please try WhatsApp!</span>`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Submit Request';
+            }
+        });
+    </script>
+    <script src="main.js"></script>
+    <script src="terms-modal.js"></script>
+</body>
+
+</html>
