@@ -12,6 +12,8 @@ if ($method === 'GET') {
     try {
         if ($mode === 'pending') {
             $stmt = $pdo->query("SELECT id, name, route, rating, message, photo, created_at FROM reviews WHERE approved = 0 ORDER BY created_at DESC");
+        } elseif ($mode === 'approved') {
+            $stmt = $pdo->query("SELECT id, name, route, rating, message, photo, created_at FROM reviews WHERE approved = 1 ORDER BY created_at DESC");
         } else {
             $stmt = $pdo->query("SELECT name, route, rating, message, photo, created_at FROM reviews WHERE approved = 1 ORDER BY created_at DESC LIMIT 20");
         }

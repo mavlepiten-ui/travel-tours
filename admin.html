@@ -167,7 +167,14 @@
                         <button onclick="loadReviews()" class="btn btn-secondary" style="padding: 5px 12px; font-size: 0.85rem;">🔄 Refresh</button>
                     </div>
                     <div id="pending-reviews-list">
-                        <p style="text-align:center;color:var(--text-secondary);">Loading reviews...</p>
+                        <p style="text-align:center;color:var(--text-secondary);">Loading pending reviews...</p>
+                    </div>
+
+                    <div style="margin-top: 40px; border-top: 2px solid var(--border-color); padding-top: 20px;">
+                        <h3 style="margin-bottom:20px;">Published Reviews</h3>
+                        <div id="approved-reviews-list">
+                            <p style="text-align:center;color:var(--text-secondary);">Loading published reviews...</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -330,39 +337,65 @@
 
         // --- 2. REVIEWS MGMT ---
         async function loadReviews() {
-            const list = document.getElementById('pending-reviews-list');
+            const pendingList = document.getElementById('pending-reviews-list');
+            const approvedList = document.getElementById('approved-reviews-list');
+            
+            // --- Load Pending Reviews ---
             try {
                 const res = await fetch('reviews_api.php?mode=pending');
                 const data = await res.json();
                 
                 if (data.length === 0) {
-                    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-secondary);">✅ No pending reviews. You are all caught up!</div>';
-                    return;
+                    pendingList.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-secondary);">✅ No pending reviews.</div>';
+                } else {
+                    pendingList.innerHTML = data.map(r => renderReviewCard(r, 'pending')).join('');
                 }
-
-                list.innerHTML = data.map(r => {
-                    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-                    return `
-                        <div style="border:1px solid var(--border-color);border-radius:16px;padding:20px;margin-bottom:15px;background:rgba(255,255,255,0.02);">
-                            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">
-                                <div>
-                                    <strong>${r.name}</strong>
-                                    <span style="color:var(--text-secondary);font-size:0.85rem;margin-left:8px;">${r.route}</span>
-                                </div>
-                                <span style="color:#f59e0b;font-size:1.1rem;">${stars}</span>
-                            </div>
-                            <p style="color:var(--text-secondary);font-size:0.95rem;line-height:1.6;margin-bottom:15px;">"${r.message}"</p>
-                            ${r.photo ? `<img src="${r.photo}" style="max-height:150px;border-radius:8px;margin-bottom:15px;object-fit:cover;">` : ''}
-                            <div style="display:flex;gap:10px;">
-                                <button onclick="reviewAction('approve', ${r.id})" class="btn btn-primary" style="padding:6px 16px;font-size:0.85rem;">✅ Approve</button>
-                                <button onclick="reviewAction('delete', ${r.id})" style="padding:6px 16px;font-size:0.85rem;background:#ef4444;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🗑️ Delete</button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
             } catch(e) {
-                list.innerHTML = '<p style="color:#ef4444;text-align:center;">Failed to load reviews.</p>';
+                pendingList.innerHTML = '<p style="color:#ef4444;text-align:center;">Failed to load pending reviews.</p>';
             }
+
+            // --- Load Approved Reviews ---
+            try {
+                const res = await fetch('reviews_api.php?mode=approved');
+                const data = await res.json();
+                
+                if (data.length === 0) {
+                    approvedList.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-secondary);">No approved reviews yet.</div>';
+                } else {
+                    approvedList.innerHTML = data.map(r => renderReviewCard(r, 'approved')).join('');
+                }
+            } catch(e) {
+                approvedList.innerHTML = '<p style="color:#ef4444;text-align:center;">Failed to load approved reviews.</p>';
+            }
+        }
+
+        function renderReviewCard(r, type) {
+            const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+            const actionButtons = type === 'pending' 
+                ? `
+                    <button onclick="reviewAction('approve', ${r.id})" class="btn btn-primary" style="padding:6px 16px;font-size:0.85rem;">✅ Approve</button>
+                    <button onclick="reviewAction('delete', ${r.id})" style="padding:6px 16px;font-size:0.85rem;background:#ef4444;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🗑️ Delete</button>
+                `
+                : `
+                    <button onclick="reviewAction('delete', ${r.id})" style="padding:6px 16px;font-size:0.85rem;background:#ef4444;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🗑️ Remove Review</button>
+                `;
+
+            return `
+                <div style="border:1px solid var(--border-color);border-radius:16px;padding:20px;margin-bottom:15px;background:rgba(255,255,255,0.02);">
+                    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">
+                        <div>
+                            <strong>${r.name}</strong>
+                            <span style="color:var(--text-secondary);font-size:0.85rem;margin-left:8px;">${r.route}</span>
+                        </div>
+                        <span style="color:#f59e0b;font-size:1.1rem;">${stars}</span>
+                    </div>
+                    <p style="color:var(--text-secondary);font-size:0.95rem;line-height:1.6;margin-bottom:15px;">"${r.message}"</p>
+                    ${r.photo ? `<img src="${r.photo}" style="max-height:150px;border-radius:8px;margin-bottom:15px;object-fit:cover;">` : ''}
+                    <div style="display:flex;gap:10px;">
+                        ${actionButtons}
+                    </div>
+                </div>
+            `;
         }
 
         async function reviewAction(action, id) {
