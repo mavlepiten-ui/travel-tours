@@ -3,6 +3,9 @@ FROM php:8.2-apache
 # Install PDO MySQL extension for database connectivity
 RUN docker-php-ext-install pdo pdo_mysql
 
+# Install SSL CA certificates for TiDB Cloud TLS connections
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
