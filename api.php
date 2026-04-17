@@ -14,9 +14,17 @@ if ($method === 'GET') {
         $trips = $stmt->fetchAll();
         
         foreach ($trips as &$trip) {
-            $media_stmt = $pdo->prepare("SELECT file_path, file_type FROM trip_media WHERE trip_id = ?");
+            $media_stmt = $pdo->prepare("SELECT id, file_type FROM trip_media WHERE trip_id = ?");
             $media_stmt->execute([$trip['id']]);
-            $trip['media'] = $media_stmt->fetchAll();
+            $media_rows = $media_stmt->fetchAll();
+
+            // Build media array with serve_media.php URLs instead of filesystem paths
+            $trip['media'] = array_map(function($m) {
+                return [
+                    'file_path' => 'serve_media.php?id=' . $m['id'],
+                    'file_type' => $m['file_type']
+                ];
+            }, $media_rows);
         }
         
         echo json_encode($trips);
@@ -46,12 +54,6 @@ if ($method === 'POST') {
         exit;
     }
 
-    // Create uploads directory if it doesn't exist
-    $upload_dir = 'uploads/';
-    if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0777, true);
-    }
-
     try {
         $pdo->beginTransaction();
 
@@ -60,7 +62,7 @@ if ($method === 'POST') {
         $stmt->execute([$title, $description]);
         $trip_id = $pdo->lastInsertId();
 
-        // 2. Process Files
+        // 2. Process Files — store binary data directly in the database
         $files = $_FILES['media'];
         $file_count = count($files['name']);
 
@@ -71,17 +73,28 @@ if ($method === 'POST') {
             $tmp_name = $files['tmp_name'][$i];
             $extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
             
-            // Generate unique filename
-            $new_filename = uniqid() . '.' . $extension;
-            $target_path = $upload_dir . $new_filename;
-
-            // Determine file type
+            // Determine file type and MIME
             $video_exts = ['mp4', 'webm', 'ogg', 'mov'];
             $file_type = in_array($extension, $video_exts) ? 'video' : 'image';
 
-            if (move_uploaded_file($tmp_name, $target_path)) {
-                $stmt_media = $pdo->prepare("INSERT INTO trip_media (trip_id, file_path, file_type) VALUES (?, ?, ?)");
-                $stmt_media->execute([$trip_id, $target_path, $file_type]);
+            // Map extension to MIME type
+            $mime_map = [
+                'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png',
+                'gif' => 'image/gif', 'webp' => 'image/webp', 'svg' => 'image/svg+xml',
+                'mp4' => 'video/mp4', 'webm' => 'video/webm', 'ogg' => 'video/ogg',
+                'mov' => 'video/quicktime'
+            ];
+            $mime_type = $mime_map[$extension] ?? ($file_type === 'video' ? 'video/mp4' : 'image/jpeg');
+
+            // Read the file binary data
+            $file_data = file_get_contents($tmp_name);
+
+            if ($file_data !== false) {
+                $stmt_media = $pdo->prepare(
+                    "INSERT INTO trip_media (trip_id, file_path, file_type, file_data, mime_type) VALUES (?, ?, ?, ?, ?)"
+                );
+                // file_path is kept for backward compat but won't be used for serving
+                $stmt_media->execute([$trip_id, 'db_stored', $file_type, $file_data, $mime_type]);
             }
         }
 
@@ -95,4 +108,3 @@ if ($method === 'POST') {
     }
 }
 ?>
-

@@ -17,11 +17,14 @@ CREATE TABLE trips (
 );
 
 -- Create the trip_media table (Multiple files per trip)
+-- Media is stored as LONGBLOB in the database for cloud compatibility
 CREATE TABLE trip_media (
     id INT AUTO_INCREMENT PRIMARY KEY,
     trip_id INT NOT NULL,
-    file_path VARCHAR(255) NOT NULL,
+    file_path VARCHAR(255) NOT NULL DEFAULT 'db_stored',
     file_type ENUM('image', 'video') NOT NULL,
+    file_data LONGBLOB DEFAULT NULL,
+    mime_type VARCHAR(100) DEFAULT NULL,
     FOREIGN KEY (trip_id) REFERENCES trips(id) ON DELETE CASCADE
 );
 
@@ -68,3 +71,8 @@ SELECT * FROM reviews WHERE approved = 1 ORDER BY created_at DESC;
 -- FROM trips t LEFT JOIN trip_media m ON t.id = m.trip_id 
 -- GROUP BY t.id ORDER BY t.created_at DESC;
 
+-- ============================================
+-- MIGRATION: If upgrading from old schema, run these:
+-- ALTER TABLE trip_media ADD COLUMN file_data LONGBLOB DEFAULT NULL;
+-- ALTER TABLE trip_media ADD COLUMN mime_type VARCHAR(100) DEFAULT NULL;
+-- ============================================
