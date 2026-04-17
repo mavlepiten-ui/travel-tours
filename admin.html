@@ -405,8 +405,18 @@
             formData.append('review_id', id);
             formData.append('password', masterPassword);
 
-            await fetch('reviews_api.php', { method: 'POST', body: formData });
-            loadReviews();
+            try {
+                const res = await fetch('reviews_api.php', { method: 'POST', body: formData });
+                const result = await res.json();
+                
+                if (result.success) {
+                    loadReviews();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to ' + action + ' review.'));
+                }
+            } catch (err) {
+                alert('Network error or server failed to respond.');
+            }
         }
 
         // --- 3. TRAVELS MGMT ---
